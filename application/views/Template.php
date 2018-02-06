@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Template admin</title>
 
     <!-- Bootstrap Core CSS -->
    <!-- Bootstrap Core CSS -->
@@ -29,6 +29,10 @@
 
     <!-- Custom Fonts -->
     <link href="<?php echo base_url(); ?>asset/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -76,10 +80,10 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="<?php echo base_url(); ?>home"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="<?php echo base_url(); ?>home/suratmasuk"><i class="fa fa-dashboard fa-fw"></i> Surat Masuk</a>
                         </li>
                         <li>
-                            <a href="<?php echo base_url(); ?>surat"><i class="fa fa-dashboard fa-fw"></i> Surat</a>
+                            <a href="<?php echo base_url(); ?>home/disposisi"><i class="fa fa-dashboard fa-fw"></i> Disposisi</a>
                         </li>
                         <li>
                             <a href="<?php echo base_url(); ?>home/suratkeluar"><i class="fa fa-dashboard fa-fw"></i> Surat Keluar</a>
@@ -107,7 +111,7 @@
     </div>
     <!-- /#wrapper -->
 <!-- jQuery -->
-    <script src="<?php echo base_url(); ?>asset/vendor/jquery/jquery.min.js"></script>
+     <script src="<?php echo base_url(); ?>asset/vendor/jquery/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo base_url(); ?>asset/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -119,13 +123,9 @@
     <script src="<?php echo base_url(); ?>asset/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url(); ?>asset/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>asset/vendor/datatables-responsive/dataTables.responsive.js"></script>
-    
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="<?php echo base_url(); ?>asset/dist/js/sb-admin-2.js"></script>
-
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>

@@ -17,9 +17,12 @@ class SuratModel extends CI_Model {
 	}
 
 	public function getSurat(){
-		$idUser = $this->session->userdata('idUser');
-		return $this->db->where('pembuat', $idUser)
-						->get('surat_masuk')
+		return $this->db->get('surat_masuk')
+						->result();
+	}
+
+	public function getSuratKeluar(){
+		return $this->db->get('surat_keluar')
 						->result();
 	}
 
@@ -58,6 +61,31 @@ class SuratModel extends CI_Model {
 		}
 	}
 
+	public function editSuratKeluar(){
+		$idSurat = $this->input->post('idSurat');
+		$judul = $this->input->post('judul');
+		$noSurat = $this->input->post('noSurat');
+		$perihal = $this->input->post('perihal');
+		$pengirim = $this->input->post('pengirim');
+		$penerima = $this->input->post('penerima');
+		$tglkirim = $this->input->post('tglkirim');
+		$data = array(
+			'judul' => $judul,
+			'noSurat' => $noSurat,
+			'perihal' => $perihal,
+			'pengirim' => $pengirim,
+			'penerima' => $penerima,
+			'tglKirim' => $tglkirim);
+		$this->db->where('idSuratKeluar', $idSurat)
+				 ->update('surat_keluar', $data);
+
+		if ($this->db->affected_rows() > 0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
 	public function setStatus(){
 		$id = $this->uri->segment(3);
 		$data = array('status' => "sudah terbaca", );
@@ -71,11 +99,20 @@ class SuratModel extends CI_Model {
 		
 	}
 
-	public function getSuratKeluar(){
+	public function getSuratDisposisi(){
 		$idUser = $this->session->userdata('idUser');
 		return $this->db->where('disposisi.pengirim', $idUser)
 						->join('disposisi', 'disposisi.idSurat = surat_masuk.idSuratMasuk')
 						->join('user', 'user.idUser = disposisi.penerima')
+						->get('surat_masuk')
+						->result();
+	}
+
+	public function getSuratDisposisiMasuk(){
+		$idUser = $this->session->userdata('idUser');
+		return $this->db->where('disposisi.penerima', $idUser)
+						->join('disposisi', 'disposisi.idSurat = surat_masuk.idSuratMasuk')
+						->join('user', 'user.idUser = disposisi.pengirim')
 						->get('surat_masuk')
 						->result();
 	}
@@ -87,23 +124,58 @@ class SuratModel extends CI_Model {
 		echo json_encode($data);
 	}
 	
+	public function getSuratKeluarByid($idSurat){
+		$data = $this->db->where('idSuratKeluar', $idSurat)
+						->get('surat_keluar')
+						->row();
+		echo json_encode($data);
+	}
+
 	public function tambahSurat($file){
-		$idUser = $this->session->userdata('idUser');
+		
 		$judul = $this->input->post('judul');
 		$noSurat = $this->input->post('noSurat');
 		$perihal = $this->input->post('perihal');
 		$pengirim = $this->input->post('pengirim');
 		$penerima = $this->input->post('penerima');
+		$tglKirim = $this->input->post('tglkirim');
+		$tglTerima = $this->input->post('tglterima');
 		$data = array(
-			'judul' => $judul,
+			'judul' => $this->input->post('judul'),
 			'noSurat' => $noSurat,
 			'perihal' => $perihal,
 			'pengirim' => $pengirim,
 			'penerima' => $penerima,
-			'pembuat' => $idUser,
+			'tglKirim' => $tglKirim,
+			'tglTerima' => $tglTerima,
 			'file' => $file['file_name']);
 		$this->db->insert('surat_masuk', $data);
+		
+		if ($this->db->affected_rows() > 0) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 
+	public function tambahSuratKeluar($file){
+		
+		$judul = $this->input->post('judul');
+		$noSurat = $this->input->post('noSurat');
+		$perihal = $this->input->post('perihal');
+		$pengirim = $this->input->post('pengirim');
+		$penerima = $this->input->post('penerima');
+		$tglKirim = $this->input->post('tglkirim');
+		$data = array(
+			'judul' => $this->input->post('judul'),
+			'noSurat' => $noSurat,
+			'perihal' => $perihal,
+			'pengirim' => $pengirim,
+			'penerima' => $penerima,
+			'tglKirim' => $tglKirim,
+			'file' => $file['file_name']);
+		$this->db->insert('surat_keluar', $data);
+		
 		if ($this->db->affected_rows() > 0) {
 			return TRUE;
 		} else {
@@ -128,6 +200,56 @@ class SuratModel extends CI_Model {
 			return FALSE;
 		}
 		
+	}
+
+	public function hapusSuratMasuk(){
+		$id = $this->uri->segment(3);
+		$this->db->where('idSuratMasuk', $id)
+				 ->delete('surat_masuk');
+		if ($this->db->affected_rows() == 1) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function hapusSuratKeluar(){
+		$id = $this->uri->segment(3);
+		$this->db->where('idSuratKeluar', $id)
+				 ->delete('surat_keluar');
+		if ($this->db->affected_rows() == 1) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function editFileSurat($file){
+		$idSurat = $this->input->post('idSurat');
+		$data = array('file' => $file['file_name'], );
+
+		$this->db->where('idSuratMasuk', $idSurat)
+				 ->update('surat_masuk', $data);
+
+		if ($this->db->affected_rows() == 1) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function editFileSuratKeluar($file){
+		$idSurat = $this->input->post('idSurat');
+		$data = array('file' => $file['file_name'], );
+
+		$this->db->where('idSuratKeluar', $idSurat)
+				 ->update('surat_keluar', $data);
+
+		if ($this->db->affected_rows() == 1) {
+			return TRUE;
+		} else {
+			return FALSE;
+		}
 	}
 
 }

@@ -10,23 +10,61 @@ class Home extends CI_Controller {
 		$this->load->model('UserModel');
 	}
 
-	public function index()
-	{
+	public function index(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			redirect('home/SuratMasuk');
+		} else {
+			$this->load->view('login');
+		}
+	}
+
+	public function SuratMasuk(){
 		if ($this->session->userdata('logged_in') == TRUE) {
 			if ($this->session->userdata('level') == "admin") {
-				$data['SuratMasuk'] = $this->SuratModel->getSuratMasuk();
+				$data['Surat'] = $this->SuratModel->getSurat();
 				$data['users'] = $this->UserModel->getUser();
-				$data['view'] = "admin/Dashboard";
+				$data['view'] = "admin/SuratMasuk";
 				$this->load->view('Template', $data);
 			} else {
-				$data['view'] = "anggota/SuratMasuk";
-				$data['SuratMasuk'] = $this->SuratModel->getSuratMasuk();
+				$data['view'] = "anggota/SuratDisposisiMasuk";
+				$data['SuratDisposisiMasuk'] = $this->SuratModel->getSuratDisposisiMasuk();
 				$data['users'] = $this->UserModel->getUser();
 				$this->load->view('TemplateA', $data);
 			}
 		} else {
 			$this->load->view('Login');	
-		}	
+		}
+	}
+
+
+	public function disposisi(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			if ($this->session->userdata('level') == "admin") {
+				$data['view'] = "admin/SuratDisposisi";
+				$data['SuratDisposisi'] = $this->SuratModel->getSuratDisposisi();
+				$data['users'] = $this->UserModel->getUser();
+				$this->load->view('Template', $data);
+			} else {
+				$data['view'] = "anggota/SuratDisposisiMasuk";
+				$data['SuratDisposisiMasuk'] = $this->SuratModel->getSuratDisposisiMasuk();
+				$data['users'] = $this->UserModel->getUser();
+				$this->load->view('TemplateA', $data);
+			}
+		} else {
+			redirect('home');
+		}
+	}
+
+	public function disposisiKeluar(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			$data['view'] = "anggota/SuratDisposisiKeluar";
+				$data['SuratDisposisiKeluar'] = $this->SuratModel->getSuratDisposisi();
+				$data['users'] = $this->UserModel->getUser();
+				$this->load->view('TemplateA', $data);
+		} else {
+			redirect('home','refresh');
+		}
+		
 	}
 
 	public function suratKeluar(){
@@ -36,26 +74,18 @@ class Home extends CI_Controller {
 				$data['SuratKeluar'] = $this->SuratModel->getSuratKeluar();
 				$data['users'] = $this->UserModel->getUser();
 				$this->load->view('Template', $data);
-			} else {
-				$data['view'] = "anggota/SuratKeluar";
-				$data['SuratKeluar'] = $this->SuratModel->getSuratKeluar();
-				$data['users'] = $this->UserModel->getUser();
-				$this->load->view('TemplateA', $data);
 			}
 		} else {
 			redirect('home');
-		}
+		}	
 	}
 
 	public function cekUser(){
 		if ($this->LoginModel->cekUser() == TRUE) {
 			if ($this->session->userdata('level') == "super admin" || $this->session->userdata('level') == "admin") {
-				$data['view'] = "admin/Dashboard";
-				$this->load->view('Template', $data);
+				redirect('home/SuratMasuk','refresh');
 			} else {
-				$data['view'] = "anggota/SuratMasuk";
-				$data['SuratMasuk'] = $this->SuratModel->getSuratMasuk();
-				$this->load->view('TemplateA', $data);
+				redirect('home/SuratMasuk','refresh');
 			}
 		} else {
 			redirect('home');

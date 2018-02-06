@@ -9,26 +9,8 @@ class Surat extends CI_Controller {
 		$this->load->model('UserModel');
 	}
 
-	public function index(){
-		if ($this->session->userdata('logged_in') == TRUE) {
-			if ($this->session->userdata('level') == "admin") {
-				$data['view'] = "admin/Surat";
-				$data['Surat'] = $this->SuratModel->getSurat();
-				$data['users'] = $this->UserModel->getUser();
-				$this->load->view('Template', $data);
-			} else {
-				$data['view'] = "anggota/SuratMasuk";
-				$data['Surat'] = $this->SuratModel->getSuratMasuk();
-				$data['users'] = $this->UserModel->getUser();
-				$this->load->view('TemplateA', $data);
-			}
-		} else {
-			$this->load->view('Login');	
-		}	
-	}
-
 	public function tambahSurat(){
-		$user = $this->session->userdata('level');
+		
 		if ($this->session->userdata('logged_in') == TRUE) {
 			$config['upload_path'] = './uploads/';
 			$config['allowed_types']	= 'pdf';
@@ -40,15 +22,77 @@ class Surat extends CI_Controller {
 			else{
 				if ($this->SuratModel->tambahSurat($this->upload->data()) == TRUE) {
 					echo
-					'<script type="text/javascript">alert("Tambah Surat Berhasil");
-				 window.location.href="'.base_url().'home/suratkeluar";
+					'<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
 				 </script>';
 				} else {
 					echo
-					'<script type="text/javascript">alert("Tambah Surat Gagal");
-				 window.location.href="'.base_url().'home/suratkeluar";
+					'<script type="text/javascript">alert("Hapus Surat Gagal");
+				 window.location.href="'.base_url().'home/suratmasuk";
 				 </script>';
 				}
+			}
+		} else {
+			redirect('home');
+		}
+	}
+
+	public function tambahSuratKeluar(){
+		
+		if ($this->session->userdata('logged_in') == TRUE) {
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types']	= 'pdf';
+			$this->load->library('upload', $config);
+			if ( !$this->upload->do_upload('file')){
+				$error = array('error' => $this->upload->display_errors());
+				echo json_encode($error);
+			}
+			else{
+				if ($this->SuratModel->tambahSuratKeluar($this->upload->data()) == TRUE) {
+					echo
+					'<script type="text/javascript">alert("Tambah Surat Keluar Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				} else {
+					echo
+					'<script type="text/javascript">alert("Tambah Surat Keluar Gagal");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				}
+			}
+		} else {
+			redirect('home');
+		}
+	}
+
+	public function hapusSuratMasuk(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+
+			if ($this->SuratModel->hapusSuratMasuk() == TRUE) {
+				echo '<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';				
+			} else {
+				 echo '<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+			}
+		} else {
+			redirect('home');
+		}
+	}
+
+	public function hapusSuratKeluar(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+
+			if ($this->SuratModel->hapusSuratKeluar() == TRUE) {
+				echo '<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';				
+			} else {
+				 echo '<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
 			}
 		} else {
 			redirect('home');
@@ -72,23 +116,104 @@ class Surat extends CI_Controller {
 		$this->SuratModel->getSuratByid($idSurat);
 	}
 
+	public function getSuratKeluarByid($idSurat){
+		$this->SuratModel->getSuratKeluarByid($idSurat);
+	}
+
 	public function editSurat(){
 		if ($this->session->userdata('logged_in') == TRUE) {
 			if ($this->SuratModel->editSurat() == TRUE) {
 				echo
 				'<script type="text/javascript">alert("Edit Surat Berhasil");
-				 window.location.href="'.base_url().'home/suratkeluar";
+				 window.location.href="'.base_url().'home/suratmasuk";
 				 </script>';
 			} else {
 				echo
 				'<script type="text/javascript">alert("Edit Surat Gagal");
-				 window.location.href="'.base_url().'home/suratkeluar";
+				 window.location.href="'.base_url().'home/suratmasuk";
 				 </script>';
 			}
 			
 		} else {
 			redirect('home');
 		}
+	}
+
+	public function editSuratKeluar(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			if ($this->SuratModel->editSuratKeluar() == TRUE) {
+				echo
+				'<script type="text/javascript">alert("Edit Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+			} else {
+				echo
+				'<script type="text/javascript">alert("Edit Surat Gagal");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+			}
+			
+		} else {
+			redirect('home');
+		}
+	}
+
+	public function editFilesSurat(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types']	= 'pdf';
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('file')){
+				echo
+					'<script type="text/javascript">alert("'.$this->upload->display_errors().'");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+			}
+			else{
+				if ($this->SuratModel->editFileSurat($this->upload->data()) == TRUE) {
+					echo
+					'<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				} else {
+					echo
+					'<script type="text/javascript">alert("Hapus Surat Gagal");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				}
+			}
+		} else {
+			redirect('home');
+		}	
+	}
+
+	public function editFilesSuratKeluar(){
+		if ($this->session->userdata('logged_in') == TRUE) {
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types']	= 'pdf';
+			$this->load->library('upload', $config);
+			if ( ! $this->upload->do_upload('file')){
+				echo
+					'<script type="text/javascript">alert("'.$this->upload->display_errors().'");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+			}
+			else{
+				if ($this->SuratModel->editFileSuratKeluar($this->upload->data()) == TRUE) {
+					echo
+					'<script type="text/javascript">alert("Hapus Surat Berhasil");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				} else {
+					echo
+					'<script type="text/javascript">alert("Hapus Surat Gagal");
+				 window.location.href="'.base_url().'home/suratmasuk";
+				 </script>';
+				}
+			}
+		} else {
+			redirect('home');
+		}	
 	}
 
 	public function hapusDisposisi(){
@@ -125,8 +250,7 @@ class Surat extends CI_Controller {
 			}
 		} else {
 			redirect('home');
-		}
-		
+		}		
 	}
 
 	public function getAllUser(){

@@ -83,12 +83,11 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="<?php echo base_url(); ?>home"><i class="fa fa-dashboard fa-fw"></i> Surat Masuk</a>
+                            <a href="<?php echo base_url(); ?>home/disposisi"><i class="fa fa-dashboard fa-fw"></i> Disposisi Masuk</a>
                         </li>
                         <li>
-                             <a href="<?php echo base_url(); ?>home/suratkeluar"><i class="fa fa-pencil fa-fw"></i> Surat Keluar</a>
-                        </li>
-                       
+                            <a href="<?php echo base_url(); ?>home/disposisikeluar"><i class="fa fa-dashboard fa-fw"></i> Disposisi Keluar</a>
+                        </li>                       
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Surat Keluar</h1>
+        <h1 class="page-header">Disposisi</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -24,9 +24,8 @@
                     </thead>
                     <tbody>
                         <?php
-                            foreach ($SuratKeluar as $s) {
+                            foreach ($SuratDisposisi as $s) {
                         ?>
-
                         <tr class="odd gradeX">
                             <td><?php echo $s->judul; ?></td>
                             <td><?php echo $s->perihal; ?></td>
