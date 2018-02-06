@@ -14,10 +14,6 @@ class UserModel extends CI_Model {
 						->get('user')
 						->result();
 	}
-
-	public function getAllUser(){
-
-	}
 }
 
 /* End of file UserModel.php */

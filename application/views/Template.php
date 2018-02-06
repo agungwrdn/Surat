@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Template admin</title>
+    <title>Surat Revision</title>
 
     <!-- Bootstrap Core CSS -->
    <!-- Bootstrap Core CSS -->
@@ -55,7 +55,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                <a class="navbar-brand" href="index.html">Surat Revision</a>
             </div>
             <!-- /.navbar-header -->
 
